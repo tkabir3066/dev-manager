@@ -1,6 +1,8 @@
 import React from "react";
 import { Card, ListGroup, Button } from "react-bootstrap";
 import { FaEye, FaTrash } from "react-icons/fa";
+import DatePicker from "react-datepicker";
+
 function Contact({ contact, deleteContact }) {
   const {
     id,

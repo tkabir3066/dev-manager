@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Form, Row, Col, Button } from "react-bootstrap";
+import DatePicker from "react-datepicker";
+
 function AddContact({ addContact }) {
   const [contact, setContact] = useState({
     firstName: "",
@@ -12,16 +14,9 @@ function AddContact({ addContact }) {
     dateOfBirth: "",
   });
 
-  const {
-    firstName,
-    lastName,
-    email,
-    profession,
-    bio,
-    image,
-    dateOfBirth,
-    gender,
-  } = contact;
+  const { firstName, lastName, email, profession, bio, image } = contact;
+
+  const [startDate, setStartDate] = useState(new Date());
   const handleChange = (e) => {
     setContact({
       ...contact,
@@ -144,12 +139,14 @@ function AddContact({ addContact }) {
             </Form.Label>
           </Col>
           <Col sm={9}>
-            <Form.Control
-              type="date"
-              name="dateOfBirth"
-              id="dateOfBirth"
-              onChange={handleChange}
-              value={dateOfBirth}
+            <DatePicker
+              selected={startDate}
+              onChange={(date) => setStartDate(date)}
+              maxDate={new Date()}
+              peekNextMonth
+              showMonthDropdown
+              showYearDropdown
+              dropdownMode="select"
             />
           </Col>
         </Form.Group>
