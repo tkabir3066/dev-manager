@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import Contacts from "./contacts/Contacts";
 import Header from "./layouts/Header";
 import { Container } from "react-bootstrap";
+import AddContact from "./contacts/AddContact";
+import { v4 as uuidv4 } from "uuid";
 
 const initialContacts = [
   {
@@ -96,6 +98,20 @@ const initialContacts = [
 
 function App() {
   const [contacts, setContacts] = useState(initialContacts);
+
+  const deleteContact = (id) => {
+    const updatedContact = contacts.filter((contact) => contact.id !== id);
+    setContacts(updatedContact);
+  };
+
+  const addContact = (contact) => {
+    const contactToAdd = {
+      id: uuidv4(),
+      ...contact,
+    };
+
+    setContacts([contactToAdd, ...contacts]);
+  };
   return (
     <>
       <Header />
@@ -103,7 +119,8 @@ function App() {
       <Container
         style={{ width: "800px", margin: "0 auto", paddingTop: "10px" }}
       >
-        <Contacts contacts={contacts} />
+        <AddContact addContact={addContact} />
+        <Contacts contacts={contacts} deleteContact={deleteContact} />
       </Container>
     </>
   );
