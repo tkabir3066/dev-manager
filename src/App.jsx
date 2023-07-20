@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 import Header from "./layout/Header";
 import { Container } from "react-bootstrap";
+import Contacts from "./contacts/Contacts";
 
 const initialContacts = [
   {
@@ -98,8 +99,9 @@ const App = () => {
   const [contacts, setContacts] = useState(initialContacts);
   return (
     <>
-      <Container>
-        <Header />
+      <Header />
+      <Container style={{ width: "800px", margin: "0 auto" }} className="pt-2">
+        <Contacts contacts={contacts} />
       </Container>
     </>
   );
