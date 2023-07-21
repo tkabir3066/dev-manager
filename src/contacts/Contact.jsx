@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Card, ListGroup } from "react-bootstrap";
 import { FaEye, FaTrashCan } from "react-icons/fa6";
-const Contact = ({ contact }) => {
+const Contact = ({ contact, deleteContact }) => {
   const {
     firstName,
     lastName,
@@ -37,13 +37,17 @@ const Contact = ({ contact }) => {
             </ListGroup>
 
             <div className="ps-3 mt-3">
-              <Card.Link href="#">
+              <Card.Link>
                 <Button variant="warning" type="view" className="ps-3">
                   <FaEye />
                 </Button>
               </Card.Link>
-              <Card.Link href="#">
-                <Button variant="danger" className="ps-3 ms-3">
+              <Card.Link>
+                <Button
+                  variant="danger"
+                  className="ps-3 ms-3"
+                  onClick={() => deleteContact(id)}
+                >
                   <FaTrashCan />
                 </Button>
               </Card.Link>
