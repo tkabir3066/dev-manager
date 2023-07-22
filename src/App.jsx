@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import Header from "./layout/Header";
 import { Container } from "react-bootstrap";
 import Contacts from "./contacts/Contacts";
+import AddContact from "./contacts/AddContact";
+import { v4 as uuidv4 } from "uuid";
 
 const initialContacts = [
   {
@@ -102,10 +104,21 @@ const App = () => {
     const filteredContacts = contacts.filter((contact) => contact.id !== id);
     setContacts(filteredContacts);
   };
+
+  const addContact = (contact) => {
+    console.log(contact);
+    const contactToAdd = {
+      id: uuidv4(),
+      ...contact,
+    };
+
+    setContacts([contactToAdd, ...contacts]);
+  };
   return (
     <>
       <Header />
       <Container style={{ width: "800px", margin: "0 auto" }} className="pt-2">
+        <AddContact addContact={addContact} />
         <Contacts contacts={contacts} deleteContact={deleteContact} />
       </Container>
     </>
