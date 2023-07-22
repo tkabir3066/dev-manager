@@ -1,39 +1,81 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import DatePicker from "react-datepicker";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
+const schema = yup.object({
+  firstName: yup
+    .string()
+    .required("First Name is required")
+    .min(3, "First Name should have minimum 3 character"),
+  lastName: yup
+    .string()
+    .required("Last Name is required")
+    .min(3, "Last Name should have minimum 3 character"),
+  email: yup
+    .string()
+    .email("Please Enter a Valid Email id")
+    .required("Email Id is required"),
+  profession: yup.string().required("Profession is required"),
+  image: yup
+    .string()
+    .required("Profile Picture is required")
+    .url("Enter a valid Url"),
+  bio: yup
+    .string()
+    .required("Bio is required")
+    .min(10, "profession must be minimum 10 characters")
+    .max(300, "Bio must be maximum 300 characters"),
+});
 function AddContact({ addContact }) {
-  const [contact, setContact] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    profession: "",
-    image: "",
-    gender: "male",
-    dateOfBirth: new Date(),
-    bio: "",
+  // const [contact, setContact] = useState({
+  //   firstName: "",
+  //   lastName: "",
+  //   email: "",
+  //   profession: "",
+  //   image: "",
+  //   gender: "male",
+  //   dateOfBirth: new Date(),
+  //   bio: "",
+  // });
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    reset,
+    formState: { errors, isSubmitting, isSubmitSuccessful },
+  } = useForm({
+    resolver: yupResolver(schema),
   });
-
   const [startDate, setStartDate] = useState(new Date());
-  const handleChange = (e) => {
-    setContact({
-      ...contact,
-      [e.target.name]: e.target.value,
-    });
-  };
-  const handleSubmit = (e) => {
-    e.preventDefault();
 
-    // form validation
-
-    //form submission
-    addContact(contact);
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset({
+        firstName: "",
+        lastName: "",
+        email: "",
+        profession: "",
+        image: "",
+        bio: "",
+      });
+    }
+  }, [isSubmitSuccessful]);
+  useEffect(() => {
+    setValue("dateOfBirth", startDate);
+  }, [startDate]);
+  const onSubmit = (data) => {
+    console.log(data);
+    // addContact(data);
   };
+
   return (
     <>
       <h2 className="text-center">Add Contact</h2>
 
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit(onSubmit)}>
         {/* firstName */}
         <Form.Group as={Row} className="mb-3">
           <Col sm="3">
@@ -46,9 +88,14 @@ function AddContact({ addContact }) {
               type="text"
               name="firstName"
               id="firstName"
-              onChange={handleChange}
+              defaultValue=""
+              {...register("firstName")}
+              isInvalid={errors?.firstName}
               placeholder="Enter Your First Name"
             />
+            <Form.Control.Feedback type="invalid">
+              {errors?.firstName?.message}
+            </Form.Control.Feedback>
           </Col>
         </Form.Group>
 
@@ -64,9 +111,14 @@ function AddContact({ addContact }) {
               type="text"
               name="lastName"
               id="lastName"
-              onChange={handleChange}
+              defaultValue=""
+              {...register("lastName")}
+              isInvalid={errors?.lastName}
               placeholder="Enter Your Last Name"
             />
+            <Form.Control.Feedback type="invalid">
+              {errors?.lastName?.message}
+            </Form.Control.Feedback>
           </Col>
         </Form.Group>
 
@@ -82,9 +134,14 @@ function AddContact({ addContact }) {
               type="email"
               name="email"
               id="email"
-              onChange={handleChange}
+              defaultValue=""
+              {...register("email")}
+              isInvalid={errors?.email}
               placeholder="Enter Your Email"
             />
+            <Form.Control.Feedback type="invalid">
+              {errors?.email?.message}
+            </Form.Control.Feedback>
           </Col>
         </Form.Group>
 
@@ -100,9 +157,14 @@ function AddContact({ addContact }) {
               type="text"
               name="profession"
               id="profession"
-              onChange={handleChange}
+              defaultValue=""
+              {...register("profession")}
+              isInvalid={errors?.profession}
               placeholder="Enter Your Profession"
             />
+            <Form.Control.Feedback type="invalid">
+              {errors?.profession?.message}
+            </Form.Control.Feedback>
           </Col>
         </Form.Group>
 
@@ -118,9 +180,13 @@ function AddContact({ addContact }) {
               type="text"
               name="image"
               id="image"
-              onChange={handleChange}
+              {...register("image")}
+              isInvalid={errors?.image}
               placeholder="Enter Your Profile Picture Url"
             />
+            <Form.Control.Feedback type="invalid">
+              {errors?.image?.message}
+            </Form.Control.Feedback>
           </Col>
         </Form.Group>
 
@@ -138,7 +204,7 @@ function AddContact({ addContact }) {
               name="gender"
               id="gender"
               value="male"
-              onChange={handleChange}
+              {...register("gender")}
             />
           </Col>
           <Col xs="auto">
@@ -148,7 +214,7 @@ function AddContact({ addContact }) {
               name="gender"
               id="gender"
               value="female"
-              onChange={handleChange}
+              {...register("gender")}
             />
           </Col>
         </Form.Group>
@@ -187,13 +253,22 @@ function AddContact({ addContact }) {
               type="text"
               name="bio"
               id="bio"
-              onChange={handleChange}
+              defaultValue=""
+              {...register("bio")}
+              isInvalid={errors?.bio}
               placeholder="Enter Your Profile Picture Url"
             />
+            <Form.Control.Feedback type="invalid">
+              {errors?.bio?.message}
+            </Form.Control.Feedback>
           </Col>
         </Form.Group>
 
-        <Button variant="primary" type="submit">
+        <Button
+          variant="primary"
+          type="submit"
+          disabled={isSubmitting ? "disabled" : ""}
+        >
           Add Contact
         </Button>
       </Form>
