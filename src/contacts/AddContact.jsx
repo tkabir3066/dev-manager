@@ -18,7 +18,10 @@ const schema = yup.object({
     .string()
     .email("Please Enter a Valid Email id")
     .required("Email Id is required"),
-  profession: yup.string().required("Profession is required"),
+  profession: yup
+    .string()
+    .required("Profession is required")
+    .oneOf(["developer", "designer", "marketer"]),
   image: yup
     .string()
     .required("Profile Picture is required")
@@ -30,16 +33,6 @@ const schema = yup.object({
     .max(300, "Bio must be maximum 300 characters"),
 });
 function AddContact({ addContact }) {
-  // const [contact, setContact] = useState({
-  //   firstName: "",
-  //   lastName: "",
-  //   email: "",
-  //   profession: "",
-  //   image: "",
-  //   gender: "male",
-  //   dateOfBirth: new Date(),
-  //   bio: "",
-  // });
   const {
     register,
     handleSubmit,
@@ -49,6 +42,17 @@ function AddContact({ addContact }) {
   } = useForm({
     resolver: yupResolver(schema),
   });
+
+  const defaultValue = {
+    firstName: "Tutul",
+    lastName: "Kabir",
+    email: "tutulkabir@gmail.com",
+    profession: "developer",
+    image: "https://randomuser.me/api/portraits/men/76.jpg",
+    bio: "All about you, Modify your data yourself",
+  };
+
+  const { firstName, lastName, email, profession, image, bio } = defaultValue;
   const [startDate, setStartDate] = useState(new Date());
 
   useEffect(() => {
@@ -67,8 +71,7 @@ function AddContact({ addContact }) {
     setValue("dateOfBirth", startDate);
   }, [startDate]);
   const onSubmit = (data) => {
-    console.log(data);
-    // addContact(data);
+    addContact(data);
   };
 
   return (
@@ -88,7 +91,7 @@ function AddContact({ addContact }) {
               type="text"
               name="firstName"
               id="firstName"
-              defaultValue=""
+              defaultValue={firstName}
               {...register("firstName")}
               isInvalid={errors?.firstName}
               placeholder="Enter Your First Name"
@@ -111,7 +114,7 @@ function AddContact({ addContact }) {
               type="text"
               name="lastName"
               id="lastName"
-              defaultValue=""
+              defaultValue={lastName}
               {...register("lastName")}
               isInvalid={errors?.lastName}
               placeholder="Enter Your Last Name"
@@ -134,7 +137,7 @@ function AddContact({ addContact }) {
               type="email"
               name="email"
               id="email"
-              defaultValue=""
+              defaultValue={email}
               {...register("email")}
               isInvalid={errors?.email}
               placeholder="Enter Your Email"
@@ -153,15 +156,21 @@ function AddContact({ addContact }) {
             </Form.Label>
           </Col>
           <Col sm="9">
-            <Form.Control
-              type="text"
-              name="profession"
+            <Form.Select
               id="profession"
-              defaultValue=""
+              defaultValue={profession}
               {...register("profession")}
+              aria-label="Select Your Profession"
               isInvalid={errors?.profession}
-              placeholder="Enter Your Profession"
-            />
+            >
+              <option value="" disabled>
+                Select Your Profession
+              </option>
+              <option value="developer">Developer</option>
+              <option value="designer">Designer</option>
+              <option value="marketer">Marketer</option>
+            </Form.Select>
+
             <Form.Control.Feedback type="invalid">
               {errors?.profession?.message}
             </Form.Control.Feedback>
@@ -180,6 +189,7 @@ function AddContact({ addContact }) {
               type="text"
               name="image"
               id="image"
+              defaultValue={image}
               {...register("image")}
               isInvalid={errors?.image}
               placeholder="Enter Your Profile Picture Url"
@@ -203,6 +213,7 @@ function AddContact({ addContact }) {
               label="Male"
               name="gender"
               id="gender"
+              defaultChecked={true}
               value="male"
               {...register("gender")}
             />
@@ -253,7 +264,7 @@ function AddContact({ addContact }) {
               type="text"
               name="bio"
               id="bio"
-              defaultValue=""
+              defaultValue={bio}
               {...register("bio")}
               isInvalid={errors?.bio}
               placeholder="Enter Your Profile Picture Url"
