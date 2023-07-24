@@ -1,6 +1,8 @@
 import React from "react";
 import { Button, Card, ListGroup } from "react-bootstrap";
 import { FaEye, FaTrashCan } from "react-icons/fa6";
+import { object } from "yup";
+import { format } from "date-fns";
 const Contact = ({ contact, deleteContact }) => {
   const {
     firstName,
@@ -33,7 +35,12 @@ const Contact = ({ contact, deleteContact }) => {
             <ListGroup className="list-group-flush">
               <ListGroup.Item>Email : {email}</ListGroup.Item>
               <ListGroup.Item>Gender:{gender} </ListGroup.Item>
-              <ListGroup.Item>Date of Birth :{dateOfBirth} </ListGroup.Item>
+              <ListGroup.Item>
+                Date of Birth :
+                {dateOfBirth instanceof Object
+                  ? format(dateOfBirth, "dd/MM/yyyy")
+                  : dateOfBirth}{" "}
+              </ListGroup.Item>
             </ListGroup>
 
             <div className="ps-3 mt-3">

@@ -5,6 +5,7 @@ import { Container } from "react-bootstrap";
 import Contacts from "./contacts/Contacts";
 import AddContact from "./contacts/AddContact";
 import { v4 as uuidv4 } from "uuid";
+import { ToastContainer } from "react-toastify";
 
 const initialContacts = [
   {
@@ -117,6 +118,19 @@ const App = () => {
   return (
     <>
       <Header />
+
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <Container style={{ width: "800px", margin: "0 auto" }} className="pt-2">
         <AddContact addContact={addContact} />
         <Contacts contacts={contacts} deleteContact={deleteContact} />

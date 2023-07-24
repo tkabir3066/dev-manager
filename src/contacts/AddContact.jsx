@@ -4,7 +4,7 @@ import DatePicker from "react-datepicker";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-
+import { toast } from "react-toastify";
 const schema = yup.object({
   firstName: yup
     .string()
@@ -32,6 +32,7 @@ const schema = yup.object({
     .min(10, "profession must be minimum 10 characters")
     .max(300, "Bio must be maximum 300 characters"),
 });
+
 function AddContact({ addContact }) {
   const {
     register,
@@ -70,7 +71,11 @@ function AddContact({ addContact }) {
   useEffect(() => {
     setValue("dateOfBirth", startDate);
   }, [startDate]);
+
   const onSubmit = (data) => {
+    //showing flash message
+    toast.success("Contact is Added Successfully");
+    //adding contacts
     addContact(data);
   };
 
