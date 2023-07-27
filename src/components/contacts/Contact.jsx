@@ -1,8 +1,10 @@
 import React from "react";
 import { Button, Card, ListGroup } from "react-bootstrap";
 import { FaEye, FaTrashCan } from "react-icons/fa6";
-import { object } from "yup";
 import { format } from "date-fns";
+
+import { toast } from "react-toastify";
+
 const Contact = ({ contact, deleteContact }) => {
   const {
     firstName,
@@ -15,6 +17,11 @@ const Contact = ({ contact, deleteContact }) => {
     bio,
     id,
   } = contact;
+
+  const handleDelete = (id) => {
+    toast.success("contact is Deleted");
+    deleteContact(id);
+  };
   return (
     <>
       <Card className="mb-2">
@@ -23,8 +30,7 @@ const Contact = ({ contact, deleteContact }) => {
           <Card.Body>
             <div className="ps-3">
               <Card.Title>
-                {firstName}
-                {lastName}
+                {firstName} {lastName}
               </Card.Title>
               <Card.Subtitle className="text-muted">
                 Profession:{profession}
@@ -53,7 +59,7 @@ const Contact = ({ contact, deleteContact }) => {
                 <Button
                   variant="danger"
                   className="ps-3 ms-3"
-                  onClick={() => deleteContact(id)}
+                  onClick={handleDelete}
                 >
                   <FaTrashCan />
                 </Button>

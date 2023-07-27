@@ -5,6 +5,8 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+
 const schema = yup.object({
   firstName: yup
     .string()
@@ -33,7 +35,7 @@ const schema = yup.object({
     .max(300, "Bio must be maximum 300 characters"),
 });
 
-function AddContact({ addContact }) {
+function ContactForm({ addContact, contact, updateContact }) {
   const {
     register,
     handleSubmit,
@@ -44,16 +46,28 @@ function AddContact({ addContact }) {
     resolver: yupResolver(schema),
   });
 
+  const navigate = useNavigate();
   const defaultValue = {
-    firstName: "Tutul",
-    lastName: "Kabir",
-    email: "tutulkabir@gmail.com",
-    profession: "developer",
-    image: "https://randomuser.me/api/portraits/men/76.jpg",
-    bio: "All about you, Modify your data yourself",
+    firstName: contact?.firstName || "Tutul",
+    lastName: contact?.lastName || "Kabir",
+    email: contact?.email || "tutulkabir@gmail.com",
+    profession: contact?.profession || "developer",
+    image: contact?.image || "https://randomuser.me/api/portraits/men/76.jpg",
+    gender: contact?.gender || "male",
+    dateOfBirth: contact?.dateOfBirth || new Date(),
+    bio: contact?.bio || "All about you, Modify your data yourself",
   };
 
-  const { firstName, lastName, email, profession, image, bio } = defaultValue;
+  const {
+    firstName,
+    lastName,
+    email,
+    profession,
+    image,
+    bio,
+    gender,
+    dateOfBirth,
+  } = defaultValue;
   const [startDate, setStartDate] = useState(new Date());
 
   useEffect(() => {
@@ -73,16 +87,28 @@ function AddContact({ addContact }) {
   }, [startDate]);
 
   const onSubmit = (data) => {
-    //showing flash message
-    toast.success("Contact is Added Successfully");
+    const id = contact?.id;
+
     //adding contacts
-    addContact(data);
+
+    if (id) {
+      //showing flash message
+      toast.success("Contact is Added Successfully");
+      updateContact(data, id);
+    } else {
+      //showing flash message
+      toast.success("Contact is Added Successfully");
+      addContact(data);
+    }
+
+    navigate("/contacts");
   };
 
   return (
     <>
-      <h2 className="text-center">Add Contact</h2>
-
+      <h2 className="text-center">
+        {contact?.id ? "Edit Contact" : "Add Contact"}
+      </h2>
       <Form onSubmit={handleSubmit(onSubmit)}>
         {/* firstName */}
         <Form.Group as={Row} className="mb-3">
@@ -218,7 +244,7 @@ function AddContact({ addContact }) {
               label="Male"
               name="gender"
               id="gender"
-              defaultChecked={true}
+              defaultChecked={gender === "male"}
               value="male"
               {...register("gender")}
             />
@@ -230,6 +256,7 @@ function AddContact({ addContact }) {
               name="gender"
               id="gender"
               value="female"
+              defaultChecked={gender === "female"}
               {...register("gender")}
             />
           </Col>
@@ -285,11 +312,11 @@ function AddContact({ addContact }) {
           type="submit"
           disabled={isSubmitting ? "disabled" : ""}
         >
-          Add Contact
+          {contact?.id ? "Update Contact" : "Add Contact"}
         </Button>
       </Form>
     </>
   );
 }
 
-export default AddContact;
+export default ContactForm;
