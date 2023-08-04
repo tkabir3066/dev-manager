@@ -12,6 +12,7 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import EditContact from "./pages/EditContact";
 import AddContact from "./pages/AddContact";
+import ContactDetails from "./pages/ContactDetails";
 
 const initialContacts = [
   {
@@ -168,6 +169,11 @@ const App = () => {
             <Route
               path="/add-contact"
               element={<AddContact addContact={addContact} />}
+            />
+
+            <Route
+              path="/contacts/:id"
+              element={<ContactDetails contacts={contacts} />}
             />
             <Route
               path="/edit-contact/:id"
