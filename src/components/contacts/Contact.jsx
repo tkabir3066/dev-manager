@@ -18,8 +18,8 @@ const Contact = ({ contact, deleteContact }) => {
     id,
   } = contact;
 
-  const handleDelete = (id) => {
-    toast.success("contact is Deleted");
+  const handleDelete = () => {
+    toast.success("Contact is deleted successfully");
     deleteContact(id);
   };
   return (

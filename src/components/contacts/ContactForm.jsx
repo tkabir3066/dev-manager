@@ -93,7 +93,7 @@ function ContactForm({ addContact, contact, updateContact }) {
 
     if (id) {
       //showing flash message
-      toast.success("Contact is Added Successfully");
+      toast.success("Contact is Updated Successfully");
       updateContact(data, id);
     } else {
       //showing flash message
