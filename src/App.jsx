@@ -119,6 +119,7 @@ const App = () => {
     const contactWithUpdate = contacts.map((contact) => {
       if (contact.id === id) {
         return {
+          id,
           ...contactToUpdate,
         };
       } else {
@@ -173,7 +174,12 @@ const App = () => {
 
             <Route
               path="/contacts/:id"
-              element={<ContactDetails contacts={contacts} />}
+              element={
+                <ContactDetails
+                  contacts={contacts}
+                  deleteContact={deleteContact}
+                />
+              }
             />
             <Route
               path="/edit-contact/:id"

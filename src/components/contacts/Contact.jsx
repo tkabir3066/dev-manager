@@ -4,6 +4,7 @@ import { FaEye, FaTrashCan } from "react-icons/fa6";
 import { format } from "date-fns";
 
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 const Contact = ({ contact, deleteContact }) => {
   const {
@@ -50,7 +51,7 @@ const Contact = ({ contact, deleteContact }) => {
             </ListGroup>
 
             <div className="ps-3 mt-3">
-              <Card.Link>
+              <Card.Link as={Link} to={`/contacts/${id}`}>
                 <Button variant="warning" type="view" className="ps-3">
                   <FaEye />
                 </Button>
