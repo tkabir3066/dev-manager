@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Button, Card, ListGroup } from "react-bootstrap";
 import { FaEye, FaTrashCan } from "react-icons/fa6";
 import { format } from "date-fns";
 
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
+import { ContactContext } from "../../context/Contact.context";
 
-const Contact = ({ contact, deleteContact }) => {
+const Contact = ({ contact }) => {
+  const context = useContext(ContactContext);
+  const { deleteContact } = context;
   const {
     firstName,
     lastName,

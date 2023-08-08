@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Button, Card, ListGroup } from "react-bootstrap";
 import { FaPencil, FaTrashCan } from "react-icons/fa6";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { format } from "date-fns";
+import { ContactContext } from "../context/Contact.context";
 
-const ContactDetails = ({ contacts, deleteContact }) => {
+const ContactDetails = () => {
+  const { contacts, deleteContact } = useContext(ContactContext);
   const [contact, setContact] = useState({});
+
   const params = useParams();
   const { id } = params;
   const foundContact = contacts.find((contact) => contact.id == id);
